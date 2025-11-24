@@ -33,10 +33,6 @@ public class LoginPage extends BasePage {
     private WebElement error_msg_invalid_credentials;
 
 
-
-
-
-
     //Action Methods
     public void clearFields() {
         explicitWaits.waitForElementToBeVisible(fld_user_name);
