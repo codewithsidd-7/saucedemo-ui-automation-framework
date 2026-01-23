@@ -1,5 +1,7 @@
 package pageObjects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,6 +12,7 @@ import java.util.Random;
 
 public class AddRemoveCartPage extends BasePage {
 
+    private static final Logger log = LogManager.getLogger(AddRemoveCartPage.class);
     private ExplicitWaits waits;
     private Random random = new Random();
 
@@ -18,19 +21,17 @@ public class AddRemoveCartPage extends BasePage {
         this.waits = new ExplicitWaits(driver);
     }
 
-    // Locators
     @FindBy(css = "button.btn_inventory")
     private List<WebElement> btnAddToCart;
 
     @FindBy(css = ".shopping_cart_badge")
     private WebElement cartBadge;
 
-    // Action Methods
-
     public void addRandomProductToCart() {
         int index = random.nextInt(btnAddToCart.size());
         waits.waitForElementToBeClickable(btnAddToCart.get(index));
         btnAddToCart.get(index).click();
+        log.info("Added product to cart at index: {}", index);
     }
 
     public void addMultipleProducts(int count) {
@@ -42,19 +43,19 @@ public class AddRemoveCartPage extends BasePage {
             if (button.getText().equalsIgnoreCase("Add to cart")) {
                 waits.waitForElementToBeClickable(button);
                 button.click();
+                log.info("Added product to cart at index: {}", index);
                 added++;
             }
-            // if button already says "Remove", skip
         }
     }
-
 
     public void removeRandomProductFromCart() {
         for (WebElement button : btnAddToCart) {
             if (button.getText().equalsIgnoreCase("Remove")) {
                 waits.waitForElementToBeClickable(button);
                 button.click();
-                break; // remove only one product
+                log.info("Removed a product from cart");
+                break;
             }
         }
     }
@@ -67,14 +68,18 @@ public class AddRemoveCartPage extends BasePage {
                 waits.waitForElementToBeClickable(button);
                 button.click();
                 removed++;
+                log.info("Removed a product from cart");
             }
         }
     }
 
     public int getCartItemCount() {
         try {
-            return Integer.parseInt(cartBadge.getText());
+            int count = Integer.parseInt(cartBadge.getText());
+            log.info("Current cart count: {}", count);
+            return count;
         } catch (Exception e) {
+            log.info("Cart is empty");
             return 0;
         }
     }

@@ -1,6 +1,8 @@
 package tests;
 
 import baseTest.BaseClass;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -10,46 +12,42 @@ import utils.FetchProperties;
 
 public class AddRemoveCartTest extends BaseClass {
 
-    private LoginPage lp;
+    private static final Logger log = LogManager.getLogger(AddRemoveCartTest.class);
+    private LoginPage loginPage;
     private AddRemoveCartPage cartPage;
 
     @BeforeClass
     public void setUp() {
         driver.get(FetchProperties.get("base_url"));
-        lp = new LoginPage(driver);
-        lp.validLogin();
+        loginPage = new LoginPage(driver);
+        loginPage.validLogin();
         cartPage = new AddRemoveCartPage(driver);
+        log.info("Setup completed and logged in successfully");
     }
 
     @Test(priority = 1)
     public void testAddSingleRandomProductToCart() {
         cartPage.addRandomProductToCart();
-        Assert.assertEquals(
-                cartPage.getCartItemCount(),
-                1,
-                "Cart count did not update after adding a single product"
-        );
+        int count = cartPage.getCartItemCount();
+        log.info("Verifying cart count after adding one product: {}", count);
+        Assert.assertEquals(count, 1, "Cart count did not update after adding a single product");
     }
 
     @Test(priority = 2)
     public void testRemoveSingleRandomProductFromCart() {
         cartPage.removeRandomProductFromCart();
-        Assert.assertEquals(
-                cartPage.getCartItemCount(),
-                0,
-                "Cart count did not update after removing a single product"
-        );
+        int count = cartPage.getCartItemCount();
+        log.info("Verifying cart count after removing one product: {}", count);
+        Assert.assertEquals(count, 0, "Cart count did not update after removing a single product");
     }
 
     @Test(priority = 3)
     public void testAddMultipleRandomProductsToCart() {
         int addCount = Integer.parseInt(FetchProperties.get("add_multiple_products_to_cart"));
         cartPage.addMultipleProducts(addCount);
-        Assert.assertEquals(
-                cartPage.getCartItemCount(),
-                addCount,
-                "Cart count did not match after adding multiple products"
-        );
+        int count = cartPage.getCartItemCount();
+        log.info("Verifying cart count after adding {} products: {}", addCount, count);
+        Assert.assertEquals(count, addCount, "Cart count did not match after adding multiple products");
     }
 
     @Test(priority = 4)
@@ -58,13 +56,10 @@ public class AddRemoveCartTest extends BaseClass {
         int currentCount = cartPage.getCartItemCount();
 
         cartPage.removeMultipleProducts(removeCount);
+        int expectedCount = Math.max(0, currentCount - removeCount);
+        int count = cartPage.getCartItemCount();
 
-        int expectedCount = currentCount - removeCount;
-        if (expectedCount < 0) expectedCount = 0;
-        Assert.assertEquals(
-                cartPage.getCartItemCount(),
-                expectedCount,
-                "Cart count did not match after removing multiple products"
-        );
+        log.info("Verifying cart count after removing {} products: {}", removeCount, count);
+        Assert.assertEquals(count, expectedCount, "Cart count did not match after removing multiple products");
     }
 }
