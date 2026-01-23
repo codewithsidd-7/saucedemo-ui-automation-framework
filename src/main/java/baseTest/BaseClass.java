@@ -27,9 +27,13 @@ public class BaseClass {
         driver.manage().window().maximize();
     }
 
-    public void quitDriver() {
-        if (driver != null) {
-            driver.quit();
-        }
+//    public void quitDriver() {
+//        if (driver != null) {
+//            driver.quit();
+//        }
+//    }
+
+    public WebDriver getDriver() {
+        return driver;
     }
 }
