@@ -19,6 +19,7 @@ public class InventorySortTest extends BaseClass {
 
     @BeforeClass
     public void setUp() {
+        initializeDriver();
         driver.get(FetchProperties.get("base_url"));
         lp = new LoginPage(driver);
         lp.validLogin();

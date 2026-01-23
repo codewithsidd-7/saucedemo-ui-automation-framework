@@ -18,6 +18,7 @@ public class AddRemoveCartTest extends BaseClass {
 
     @BeforeClass
     public void setUp() {
+        initializeDriver();
         driver.get(FetchProperties.get("base_url"));
         loginPage = new LoginPage(driver);
         loginPage.validLogin();

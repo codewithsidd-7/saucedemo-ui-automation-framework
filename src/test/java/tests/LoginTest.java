@@ -15,6 +15,7 @@ public class LoginTest extends BaseClass {
 
     @BeforeMethod
     public void setUpPage() {
+        initializeDriver();
         driver.get(FetchProperties.get("base_url"));
         lp = new LoginPage(driver);
     }

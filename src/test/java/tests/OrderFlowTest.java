@@ -19,6 +19,7 @@ public class OrderFlowTest extends BaseClass {
 
     @BeforeMethod
     public void setUp() {
+        initializeDriver();
         driver.get(FetchProperties.get("base_url"));
         loginPage = new LoginPage(driver);
         loginPage.validLogin();
