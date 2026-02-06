@@ -3,6 +3,8 @@ package tests;
 import baseTest.BaseClass;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pageObjects.LoginPage;
@@ -43,4 +45,10 @@ public class LoginTest extends BaseClass {
         log.info("Starting test: validLogin");
         lp.validLogin();
     }
+
+    @AfterMethod
+    public void cleanUp() {
+        tearDown();
+    }
+
 }

@@ -6,32 +6,39 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import utils.FetchProperties;
 
 public class BaseClass {
+
     protected WebDriver driver;
 
     public void initializeDriver() {
         ChromeOptions options = new ChromeOptions();
 
-        // Read flag from config.properties
-        boolean isHeadless = Boolean.parseBoolean(FetchProperties.get("headless_mode"));
+        boolean isHeadless =
+                Boolean.parseBoolean(FetchProperties.get("headless_mode"));
+
         if (isHeadless) {
             options.addArguments("--headless=new");
         }
 
-        options.addArguments("--window-size=1920,1080");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--disable-notifications");
-        options.addArguments("--ignore-certificate-errors");
+        options.addArguments(
+                "--window-size=1920,1080",
+                "--disable-gpu",
+                "--disable-extensions",
+                "--disable-notifications",
+                "--ignore-certificate-errors"
+        );
 
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
     }
 
-//    public void quitDriver() {
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
+    protected void tearDown() {
+        boolean closeBrowser =
+                Boolean.parseBoolean(FetchProperties.get("close_browser"));
+
+        if (closeBrowser && driver != null) {
+            driver.quit();
+        }
+    }
 
     public WebDriver getDriver() {
         return driver;

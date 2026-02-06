@@ -4,6 +4,7 @@ import baseTest.BaseClass;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pageObjects.AddRemoveCartPage;
@@ -63,4 +64,10 @@ public class AddRemoveCartTest extends BaseClass {
         log.info("Verifying cart count after removing {} products: {}", removeCount, count);
         Assert.assertEquals(count, expectedCount, "Cart count did not match after removing multiple products");
     }
+
+    @AfterClass
+    public void cleanUp() {
+        tearDown();
+    }
+
 }

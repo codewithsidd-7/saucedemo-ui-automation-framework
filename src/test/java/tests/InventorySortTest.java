@@ -2,6 +2,7 @@ package tests;
 
 import baseTest.BaseClass;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -62,5 +63,12 @@ public class InventorySortTest extends BaseClass {
         Collections.sort(expectedPrices, Collections.reverseOrder());
         Assert.assertEquals(actualPrices, expectedPrices, "Prices are not sorted High→Low");
     }
+
+    @AfterClass
+    public void cleanUp() {
+        tearDown();
+    }
+
 }
+
 
